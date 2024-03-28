@@ -7,6 +7,7 @@ use axum::response::{IntoResponse, Response};
 use tracing::error;
 
 pub async fn edit_route(Path(name): Path<String>) -> (StatusCode, Response<Body>) {
+    let name = name.trim().replace(['/', '"'], "");
     let storage = match Storage::read().await {
         Ok(storage) => storage,
         Err(err) => {

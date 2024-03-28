@@ -8,6 +8,7 @@ use pulldown_cmark::Parser;
 use tracing::error;
 
 pub async fn article_route(Path(name): Path<String>) -> (StatusCode, HeaderMap, Response<Body>) {
+    let name = name.trim().replace(['/', '"'], "");
     let storage = match Storage::read().await {
         Ok(storage) => storage,
         Err(err) => {
@@ -53,7 +54,7 @@ pub async fn article_route(Path(name): Path<String>) -> (StatusCode, HeaderMap, 
     pulldown_cmark::html::push_html(&mut cmark_body, parser);
 
     let template = ArticleTemplate {
-        title: article.title.clone(),
+        title: html_escape::encode_text(&article.title.clone()).to_string(),
         body: cmark_body,
     };
 

@@ -7,9 +7,9 @@
     <title>{{ crate::INSTANCE_NAME }}</title>
     <script>
         function onNew() {
-            let name = prompt("What should the article be called?");
+            let name = prompt("What should the article be called? (Cannot contain / or \")");
             if (name == null || name === "") {
-                return
+                return;
             }
             window.location.href = "/articles/" + encodeURIComponent(name) + "/edit";
         }

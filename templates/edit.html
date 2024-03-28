@@ -20,7 +20,6 @@
                 body: body
             });
             if (res.ok) {
-                console.log(encodeURIComponent("{{ title }}"));
                 window.location = "/articles/" + encodeURIComponent("{{ title }}");
             }
             else {

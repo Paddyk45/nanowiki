@@ -16,14 +16,14 @@ pub async fn update_route(
     Path(name): Path<String>,
     Form(form): Form<FormParams>,
 ) -> (StatusCode, String) {
-    let name = name.trim();
+    let name = name.trim().replace(['/', '"'], "");
     if name.is_empty() {
         return (
             StatusCode::BAD_REQUEST,
             "Article name cannot be empty".to_string(),
         );
     }
-
+    let name = html_escape::decode_html_entities(&name);
     if !EDIT_PASSWORD.is_empty() && !form.pw.is_some_and(|pw| pw == EDIT_PASSWORD) {
         return (
             StatusCode::BAD_REQUEST,
