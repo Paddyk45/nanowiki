@@ -11,8 +11,6 @@
             let content = contentTextArea.value;
             let updateUrl = "/articles/" + encodeURIComponent("{{ title }}") + "/update";
             let body = "content=" + encodeURIComponent(content) + "&pw=" + encodeURIComponent(document.getElementById("password").value);
-            console.log("a");
-            console.log(updateUrl);
             let res = await fetch(
                 updateUrl, {
                 method: "POST",
@@ -21,15 +19,12 @@
                     },
                 body: body
             });
-            console.log("b");
             if (res.ok) {
                 console.log(encodeURIComponent("{{ title }}"));
                 window.location = "/articles/" + encodeURIComponent("{{ title }}");
             }
             else {
-                console.log("awdjioewijqwdioj");
                 let submitBtn = document.getElementById("submit")
-                submitBtn.color = "red";
                 submitBtn.textContent = "Failed to submit"
             }
         }
