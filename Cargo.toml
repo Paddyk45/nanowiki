@@ -2,6 +2,9 @@
 name = "nanowiki"
 version = "0.1.0"
 edition = "2021"
+authors = ["Paddyk45"]
+repository = "https://github.com/Paddyk45/nanowiki"
+readme = "README.md"
 
 [profile.release]
 opt-level = 'z'
