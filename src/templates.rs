@@ -1,4 +1,3 @@
-use crate::Article;
 use askama::Template;
 use axum::http::StatusCode;
 use axum::response::{Html, IntoResponse, Response};
@@ -6,7 +5,7 @@ use axum::response::{Html, IntoResponse, Response};
 #[derive(Template)]
 #[template(path = "index.html", escape = "none")]
 pub struct IndexTemplate {
-    pub articles: Vec<Article>,
+    pub article_names: Vec<String>,
 }
 
 #[derive(Template)]

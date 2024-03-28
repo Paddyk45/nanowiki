@@ -18,9 +18,12 @@ pub async fn root_route() -> (StatusCode, Response<Body>) {
     };
     let mut articles = storage.articles;
     articles.sort_by_key(|a| a.title.clone());
-
+    let article_names = articles
+        .into_iter()
+        .map(|a| html_escape::encode_text(&a.title).to_string())
+        .collect();
     (
         StatusCode::OK,
-        HtmlTemplate(IndexTemplate { articles }).into_response(),
+        HtmlTemplate(IndexTemplate { article_names }).into_response(),
     )
 }

@@ -6,10 +6,9 @@ mod storage;
 pub mod templates;
 
 use crate::routes::{article_route, edit_route, root_route, update_route};
-use crate::storage::Article;
+use axum::http::HeaderMap;
 use axum::routing::post;
 use axum::{routing::get, Router};
-use axum::http::HeaderMap;
 use tower_http::trace;
 use tower_http::trace::TraceLayer;
 use tracing::{warn, Level};
@@ -29,7 +28,7 @@ async fn main() {
         warn!("You are using the default password! Please change it");
     }
     if EDIT_PASSWORD.is_empty() {
-        warn!("You have did not set a password, this allows anyone to erase all pages, spam new pages etc.");
+        warn!("You did not set a password, this allows anyone to erase all pages, spam new pages etc.");
     }
     let app = Router::new()
         .route("/", get(root_route))
