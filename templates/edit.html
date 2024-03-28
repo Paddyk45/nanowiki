@@ -5,22 +5,48 @@
     <meta content="NanoWIKI (https://github.com/Paddyk45/nanowiki)" name="generator">
     <link rel="stylesheet" href="/style.css">
     <title>Edit {{ title }} | {{ crate::INSTANCE_NAME }}</title>
+    <script>
+        async function onSubmit() {
+            let contentTextArea = document.getElementById("content");
+            let content = contentTextArea.value;
+            let updateUrl = "/articles/" + encodeURIComponent("{{ title }}") + "/update";
+            let body = "content=" + encodeURIComponent(content) + "&pw=" + encodeURIComponent(document.getElementById("password").value);
+            console.log("a");
+            console.log(updateUrl);
+            let res = await fetch(
+                updateUrl, {
+                method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                body: body
+            });
+            console.log("b");
+            if (res.ok) {
+                console.log(encodeURIComponent("{{ title }}"));
+                window.location = "/articles/" + encodeURIComponent("{{ title }}");
+            }
+            else {
+                console.log("awdjioewijqwdioj");
+                let submitBtn = document.getElementById("submit")
+                submitBtn.color = "red";
+                submitBtn.textContent = "Failed to submit"
+            }
+        }
+    </script>
 </head>
 <body>
 <h1 class="title">Edit {{ title }}</h1>
-<label for="edit">New content:</label>
+<label for="content">New content:</label>
 <br>
-
 <br>
-<form action="/articles/{{ title }}/update" method="post">
-    <textarea id="edit" name="content" rows="20" cols="40">{{ body }}</textarea>
+    <textarea id="content" rows="20" cols="40">{{ body }}</textarea>
     <br>
-    <button class="submit" type="submit">Submit</button>
+    <button onclick="onSubmit()" id="submit">Submit</button>
 {% if !crate::EDIT_PASSWORD.is_empty() %}
     <label>
-        <input name="password" placeholder="Password" type="password" class="input">
+        <input placeholder="Password" type="password" class="input" id="password">
     </label>
 {% endif %}
-</form>
 </body>
 </html>

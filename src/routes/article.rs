@@ -4,8 +4,8 @@ use axum::body::Body;
 use axum::extract::Path;
 use axum::http::{HeaderMap, StatusCode};
 use axum::response::{IntoResponse, Response};
-use tracing::error;
 use pulldown_cmark::Parser;
+use tracing::error;
 
 pub async fn article_route(Path(name): Path<String>) -> (StatusCode, HeaderMap, Response<Body>) {
     let storage = match Storage::read().await {
@@ -19,37 +19,36 @@ pub async fn article_route(Path(name): Path<String>) -> (StatusCode, HeaderMap, 
             );
         }
     };
-    let Some(article) = storage.articles.iter().find(|a| a.title.eq(&name)) else {
-        return storage
-            .articles
-            .iter()
-            .find(|a| a.title.eq_ignore_ascii_case(&name))
-            .map_or_else(
-                || {
-                    (
-                        StatusCode::NOT_FOUND,
-                        HeaderMap::new(),
-                        "Unknown article".into_response(),
-                    )
-                },
-                |correct_article| {
-                    let mut headers = HeaderMap::new();
-                    headers.insert(
-                        "location",
-                        format!("/articles/{}", correct_article.title)
-                            .parse()
-                            .unwrap(),
-                    );
-                    (
-                        StatusCode::MOVED_PERMANENTLY,
-                        headers,
-                        String::new().into_response(),
-                    )
-                },
+    let Some(article) = storage
+        .articles
+        .iter()
+        .find(|a| a.title.eq_ignore_ascii_case(&name))
+    else {
+        if let Some(correct_article) = storage.articles.iter().find(|a| {
+            a.title
+                .eq_ignore_ascii_case(&html_escape::decode_html_entities(&name))
+        }) {
+            let mut headers = HeaderMap::new();
+            headers.insert(
+                "location",
+                format!("/articles/{}", correct_article.title)
+                    .parse()
+                    .unwrap(),
             );
+            return (
+                StatusCode::MOVED_PERMANENTLY,
+                headers,
+                String::new().into_response(),
+            );
+        }
+        return (
+            StatusCode::NOT_FOUND,
+            HeaderMap::new(),
+            "Unknown article".into_response(),
+        );
     };
-
-    let parser = Parser::new(&article.body);
+    let encoded_body = html_escape::encode_text(&article.body).to_string();
+    let parser = Parser::new(&encoded_body);
     let mut cmark_body = String::new();
     pulldown_cmark::html::push_html(&mut cmark_body, parser);
 
