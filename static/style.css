@@ -42,13 +42,6 @@ ul.dashed > li:before {
     display: inline;
 }
 
-.centered-text {
-    padding-right: 10em;
-    padding-left: 10em;
-    margin: auto;
-    flex: 1 0;
-}
-
 .dark {
     color: #878477;
 }

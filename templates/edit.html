@@ -12,7 +12,7 @@
         async function onSubmit() {
             let contentTextArea = document.getElementById("content");
             let content = contentTextArea.value;
-            let updateUrl = "/articles/" + encodeURIComponent("{{ title }}") + "/update";
+            let updateUrl = "/articles/" + encodeURIComponent("{{ title }}");
             let body = "content=" + encodeURIComponent(content) + "&pw=" + encodeURIComponent(document.getElementById("password").value);
             let res = await fetch(
                 updateUrl, {

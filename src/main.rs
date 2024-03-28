@@ -7,7 +7,6 @@ pub mod templates;
 
 use crate::routes::{article_route, edit_route, root_route, update_route};
 use axum::http::HeaderMap;
-use axum::routing::post;
 use axum::{routing::get, Router};
 use tower_http::trace;
 use tower_http::trace::TraceLayer;
@@ -34,8 +33,7 @@ async fn main() {
         .route("/", get(root_route))
         .route("/style.css", get(style_route))
         .route("/favicon.ico", get(favicon_route))
-        .route("/articles/:name", get(article_route))
-        .route("/articles/:name/update", post(update_route))
+        .route("/articles/:name", get(article_route).post(update_route))
         .route("/articles/:name/edit", get(edit_route))
         .layer(
             TraceLayer::new_for_http()
