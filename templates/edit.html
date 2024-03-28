@@ -2,9 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta content="NanoWIKI (https://github.com/Paddyk45/nanowiki)" name="generator">
+    <link rel="stylesheet" href="/style.css">
+    <title>Edit {{ title }} | {{ crate::INSTANCE_NAME }}</title>
 </head>
 <body>
+<h1 class="title">Edit {{ title }}</h1>
+<label for="edit">New content:</label>
+<br>
 
+<br>
+<form action="/articles/{{ title }}/update" method="post">
+    <textarea id="edit" name="content" rows="20" cols="40">{{ body }}</textarea>
+    <br>
+    <button class="submit" type="submit">Submit</button>
+{% if !crate::EDIT_PASSWORD.is_empty() %}
+    <label>
+        <input name="password" placeholder="Password" type="password" class="input">
+    </label>
+{% endif %}
+</form>
 </body>
 </html>

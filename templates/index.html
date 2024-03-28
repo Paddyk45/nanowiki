@@ -2,9 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta content="NanoWIKI (https://github.com/Paddyk45/nanowiki)" name="generator">
+    <link rel="stylesheet" href="/style.css">
+    <title>{{ crate::INSTANCE_NAME }}</title>
 </head>
 <body>
-
+<h1 class="title">Welcome to {{ crate::INSTANCE_NAME }}!</h1>
+<p>This wiki currently has {{ articles.len() }} articles:</p>
+<script>
+    function onNew() {
+        let name = prompt("What should the article be called?");
+        if (name == null || name === "") {
+            return
+        }
+        window.location.href = "/articles/" + name + "/edit";
+    }
+</script>
+<ul class="dashed">
+{% for a in articles %}
+    <li><a href="/articles/{{ a.title }}">{{ a.title }}</a></li>
+{% endfor %}
+</ul>
+<br>
+<button onclick="onNew()">New Article</button>
 </body>
 </html>

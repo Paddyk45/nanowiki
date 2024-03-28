@@ -1,56 +1,59 @@
-mod markup;
+#![warn(clippy::nursery, clippy::pedantic)]
+#![allow(clippy::module_name_repetitions)]
+
+mod routes;
 mod storage;
-mod model;
+pub mod templates;
 
-use askama::Template;
-use axum::{
-    routing::{get, post},
-    http::StatusCode,
-    Json, Router,
-};
-use axum::response::{Html, IntoResponse, Response};
-use url::Url;
-use crate::markup::MarkupElement;
+use crate::routes::{article_route, edit_route, root_route, update_route};
+use crate::storage::Article;
+use axum::routing::post;
+use axum::{routing::get, Router};
+use axum::http::HeaderMap;
+use tower_http::trace;
+use tower_http::trace::TraceLayer;
+use tracing::{warn, Level};
+use tracing_subscriber::filter::LevelFilter;
 
-const INSTANCE_NAME: &'static str = "NanoWIKI";
+pub const INSTANCE_NAME: &str = "NanoWIKI";
+
+// Leave empty for no password
+pub const EDIT_PASSWORD: &str = "CHANGEME";
 
 #[tokio::main]
 async fn main() {
-    tracing_subscriber::fmt::init();
-
+    tracing_subscriber::fmt()
+        .with_max_level(LevelFilter::TRACE)
+        .init();
+    if EDIT_PASSWORD == "CHANGEME" {
+        warn!("You are using the default password! Please change it");
+    }
+    if EDIT_PASSWORD.is_empty() {
+        warn!("You have did not set a password, this allows anyone to erase all pages, spam new pages etc.");
+    }
     let app = Router::new()
-        // `GET /` goes to `root`
-        .route("/", get(root));
+        .route("/", get(root_route))
+        .route("/style.css", get(style_route))
+        .route("/favicon.ico", get(favicon_route))
+        .route("/articles/:name", get(article_route))
+        .route("/articles/:name/update", post(update_route))
+        .route("/articles/:name/edit", get(edit_route))
+        .layer(
+            TraceLayer::new_for_http()
+                .make_span_with(trace::DefaultMakeSpan::new().level(Level::INFO))
+                .on_response(trace::DefaultOnResponse::new().level(Level::INFO)),
+        );
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
     axum::serve(listener, app).await.unwrap();
 }
 
-async fn root() -> impl IntoResponse {
+async fn style_route() -> (HeaderMap, String) {
+    let mut headers = HeaderMap::new();
+    headers.insert("content-type", "text/css".parse().unwrap());
+    (headers, include_str!("../static/style.css").to_string())
 }
 
-#[derive(Template)]
-#[template(path = "article.html", escape = "none")]
-struct ArticleTemplate {
-    instance_name: String,
-    title: String,
-    body: String,
-}
-
-struct HtmlTemplate<T>(T);
-
-impl<T> IntoResponse for HtmlTemplate<T>
-    where
-        T: Template,
-{
-    fn into_response(self) -> Response {
-        match self.0.render() {
-            Ok(html) => Html(html).into_response(),
-            Err(err) => (
-                StatusCode::INTERNAL_SERVER_ERROR,
-                format!("Failed to render template. Error: {err}"),
-            )
-                .into_response(),
-        }
-    }
+async fn favicon_route() -> &'static [u8] {
+    include_bytes!("../static/favicon.ico")
 }
