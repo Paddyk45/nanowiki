@@ -3,7 +3,7 @@ body {
 }
 
 * {
-    font-family: "Droid Sans Mono Slashed", sans-serif;
+    font-family: "Atkinson Hyperlegible", sans-serif;
     color: #bfbdb6;
 }
 
@@ -14,7 +14,6 @@ code {
 
 textarea {
     background-color: #283040;
-    font-family: "Droid Sans Mono Slashed", sans-serif;
     color: white;
 }
 
@@ -41,6 +40,13 @@ ul.dashed > li:before {
 
 .article-title-heading {
     display: inline;
+}
+
+.centered-text {
+    padding-right: 10em;
+    padding-left: 10em;
+    margin: auto;
+    flex: 1 0;
 }
 
 .dark {
