@@ -33,6 +33,7 @@ async fn main() {
         .route("/", get(root_route))
         .route("/style.css", get(style_route))
         .route("/favicon.ico", get(favicon_route))
+        .route("/logo.png", get(logo_route))
         .route(
             "/articles/:name",
             get(article_route).post(update_route).delete(delete_route),
@@ -56,4 +57,8 @@ async fn style_route() -> (HeaderMap, String) {
 
 async fn favicon_route() -> &'static [u8] {
     include_bytes!("../static/favicon.ico")
+}
+
+async fn logo_route() -> &'static [u8] {
+    include_bytes!("../static/logo.png")
 }
