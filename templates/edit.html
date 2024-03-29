@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/style.css">
-    <title>Edit {{ article.title }} | {{ crate::INSTANCE_NAME }}</title>
+    <title>Edit "{{ article.title }}" | {{ crate::INSTANCE_NAME }}</title>
     <script>
         async function onSubmit() {
             let contentTextArea = document.getElementById("content");
@@ -40,7 +40,7 @@
     </script>
 </head>
 <body>
-<h1 class="title">Edit {{ article.title }}</h1>
+<h1 class="title">Edit "{{ article.title }}"</h1>
 <label for="content">New content{% if !is_creation %} (leave empty to delete){% endif %}:</label>
 <br>
 <br>
