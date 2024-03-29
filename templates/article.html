@@ -16,6 +16,15 @@
 </div>
 {{ body }}
 <br>
+<small>
+    Article created: {{ creation_datetime }}
+    {% if edits > 0 %}
+    <br>
+    Article last updated: {{ last_edit_datetime }}
+    (edited {{ edits }} time{% if edits != 1 %}s{% endif %})
+    {% endif %}
+</small>
+<br>
 <a href="/" class="dark">[ Go back to home page ]</a>
 </body>
 </html>

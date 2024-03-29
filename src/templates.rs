@@ -1,3 +1,4 @@
+use crate::storage::Article;
 use askama::Template;
 use axum::http::StatusCode;
 use axum::response::{Html, IntoResponse, Response};
@@ -13,13 +14,16 @@ pub struct IndexTemplate {
 pub struct ArticleTemplate {
     pub title: String,
     pub body: String,
+    pub creation_datetime: String,
+    pub last_edit_datetime: String,
+    pub edits: usize,
 }
 
 #[derive(Template)]
-#[template(path = "edit.html", escape = "none")]
+#[template(path = "edit.html")]
 pub struct EditTemplate {
-    pub title: String,
-    pub body: String,
+    pub article: Article,
+    pub is_creation: bool,
 }
 
 pub struct HtmlTemplate<T>(pub T);

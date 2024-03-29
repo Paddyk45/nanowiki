@@ -4,6 +4,7 @@ use axum::body::Body;
 use axum::extract::Path;
 use axum::http::{HeaderMap, StatusCode};
 use axum::response::{IntoResponse, Response};
+use chrono::TimeZone;
 use pulldown_cmark::Parser;
 use tracing::error;
 
@@ -53,9 +54,21 @@ pub async fn article_route(Path(name): Path<String>) -> (StatusCode, HeaderMap, 
     let mut cmark_body = String::new();
     pulldown_cmark::html::push_html(&mut cmark_body, parser);
 
+    let creation_datetime = chrono::Utc
+        .timestamp_opt(article.creation_timestamp, 0)
+        .unwrap()
+        .to_string();
+    let last_edit_datetime = article
+        .last_edit_timestamp
+        .map(|ts| chrono::Utc.timestamp_opt(ts, 0).unwrap().to_string())
+        .unwrap_or_default();
+
     let template = ArticleTemplate {
         title: html_escape::encode_text(&article.title.clone()).to_string(),
         body: cmark_body,
+        creation_datetime,
+        last_edit_datetime,
+        edits: article.edits,
     };
 
     (

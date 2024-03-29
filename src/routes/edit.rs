@@ -25,14 +25,15 @@ pub async fn edit_route(Path(name): Path<String>) -> (StatusCode, Response<Body>
         .find(|a| a.title == name)
         .unwrap_or(Article {
             title: name.to_string(),
-            body: String::new(),
+            ..Default::default()
         });
 
+    let is_creation = article.creation_timestamp == 0;
     (
         StatusCode::OK,
         HtmlTemplate(EditTemplate {
-            title: html_escape::encode_text(&article.title).to_string(),
-            body: html_escape::encode_text(&article.body).to_string(),
+            article,
+            is_creation,
         })
         .into_response(),
     )

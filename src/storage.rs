@@ -8,6 +8,9 @@ use tokio::io::AsyncWriteExt;
 pub struct Article {
     pub title: String,
     pub body: String,
+    pub creation_timestamp: i64,
+    pub last_edit_timestamp: Option<i64>,
+    pub edits: usize,
 }
 
 #[derive(Serialize, Deserialize, Clone, Default)]
