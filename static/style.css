@@ -17,16 +17,15 @@ textarea {
     color: white;
 }
 
-ul {
-    margin: 0;
-    padding-left: 8px;
-}
 ul.dashed {
+    padding-left: 10px;
     list-style-type: none;
 }
+
 ul.dashed > li {
-    text-indent: -5px;
+    text-indent: -7px;
 }
+
 ul.dashed > li:before {
     content: "- ";
     text-indent: -5px;
