@@ -23,7 +23,7 @@
 <p>This wiki currently has {{ article_names.len() }} articles:</p>
 <ul class="dashed">
 {% for a in article_names %}
-    <li><a href="/articles/{{ a }}">{{ a }}</a></li>
+    <li><a href="/articles/{{ a|urlencode }}">{{ a }}</a></li>
 {% endfor %}
 </ul>
 <br>

@@ -20,7 +20,7 @@ pub async fn root_route() -> (StatusCode, Response<Body>) {
     articles.sort_by_key(|a| a.title.clone());
     let article_names = articles
         .into_iter()
-        .map(|a| html_escape::encode_text(&a.title).to_string())
+        .map(|a| a.title)
         .collect();
     (
         StatusCode::OK,

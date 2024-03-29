@@ -12,7 +12,7 @@
         async function onSubmit() {
             let contentTextArea = document.getElementById("content");
             let content = contentTextArea.value;
-            let updateUrl = "/articles/" + encodeURIComponent("{{ article.title }}");
+            let updateUrl = "/articles/{{ article.title|urlencode }}";
             //{% if !is_creation %}
             if (content === "" && confirm("Are you sure that you want to delete this article?")) {
                 let res = await fetch(
@@ -34,7 +34,7 @@
                     },
                 body: body
             });
-            if (res.ok) window.location = "/articles/" + encodeURIComponent("{{ article.title }}");
+            if (res.ok) window.location = "/articles/{{ article.title|urlencode }}";
             else document.getElementById("submit").textContent = `Failed to submit (${res.statusText})`;
         }
     </script>

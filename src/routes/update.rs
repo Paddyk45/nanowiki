@@ -19,7 +19,7 @@ pub async fn update_route(
 ) -> (StatusCode, String) {
     if !EDIT_PASSWORD.is_empty() && !form.pw.is_some_and(|pw| pw == EDIT_PASSWORD) {
         return (
-            StatusCode::BAD_REQUEST,
+            StatusCode::UNAUTHORIZED,
             "Wrong or missing password".to_string(),
         );
     }

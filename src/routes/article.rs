@@ -28,7 +28,7 @@ pub async fn article_route(Path(name): Path<String>) -> (StatusCode, HeaderMap, 
     else {
         if let Some(correct_article) = storage.articles.iter().find(|a| {
             a.title
-                .eq_ignore_ascii_case(&html_escape::decode_html_entities(&name))
+                .eq_ignore_ascii_case(&name)
         }) {
             let mut headers = HeaderMap::new();
             headers.insert(
@@ -64,7 +64,7 @@ pub async fn article_route(Path(name): Path<String>) -> (StatusCode, HeaderMap, 
         .unwrap_or_default();
 
     let template = ArticleTemplate {
-        title: html_escape::encode_text(&article.title.clone()).to_string(),
+        title: article.title.clone(),
         body: cmark_body,
         creation_datetime,
         last_edit_datetime,

@@ -7,13 +7,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/style.css">
-    <title>{{ title }} | {{ crate::INSTANCE_NAME }}</title>
+    <title>{{ title|e("html") }} | {{ crate::INSTANCE_NAME|e("html") }}</title>
 </head>
 <body>
 <div class="title">
-    <h1 class="article-title-heading">{{ title }}</h1>
-    <a href="/articles/{{ title }}/edit" class="dark">[edit]</a>
+    <h1 class="article-title-heading">{{ title|e("html") }}</h1>
+    <a href="/articles/{{ title|urlencode }}/edit" class="dark">[edit]</a>
 </div>
+{# HTML escaping is handled in the code, so we don't need to escape it here (hopefully) #}
 {{ body }}
 <br>
 <small>
