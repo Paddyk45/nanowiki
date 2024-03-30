@@ -21,14 +21,16 @@
                 let res = await fetch(
                     updateUrl, {
                         method: "DELETE",
+                        //{% if !crate::EDIT_PASSWORD.is_empty() %}
                         body: `pw=${document.getElementById("password").value}`
+                        //{% endif %}
                     });
                 if (res.ok) window.location.href = "/";
                 else document.getElementById("submit").textContent = "Failed to delete";
                 return;
             }
             //{% endif %}
-            let body = `content=${encodeURIComponent(content)}&pw=${encodeURIComponent(document.getElementById("password").value)}`;
+            let body = `content=${encodeURIComponent(content)}{% if !crate::EDIT_PASSWORD.is_empty() %}&pw=${encodeURIComponent(document.getElementById("password").value)}{% endif %}`
             let res = await fetch(
                 updateUrl, {
                 method: "POST",

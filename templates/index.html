@@ -14,7 +14,7 @@
     <script>
         function onNew() {
             let name = prompt("What should the article be called? (Cannot contain / or \")");
-            if (name == null || name === "") {
+            if (name == null || name === "" || name === "..") {
                 return;
             }
             window.location.href = "/articles/" + encodeURIComponent(name) + "/edit";
