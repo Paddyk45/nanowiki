@@ -1,33 +1,39 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="NanoWIKI (https://github.com/Paddyk45/nanowiki)" name="generator">
-    <meta content="{{ title|e("html") }} on {{ crate::INSTANCE_NAME|e("html") }}" property="og:title">
-    <meta content="Read about this awesome article on NanoWIKI" property="og:description">
-    <meta content="/logo.png" property="og:image">
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="NanoWIKI (https://github.com/Paddyk45/nanowiki)" name="generator">
+    <meta content="{{ title|e("html") }}" property="og:title">
+    <meta content="Read about this awesome article on {{ crate::INSTANCE_NAME }}" property="og:description">
+    <meta content="/logo.png" property="og:image">
     <link rel="stylesheet" href="/style.css">
     <title>{{ title|e("html") }} | {{ crate::INSTANCE_NAME|e("html") }}</title>
 </head>
 <body>
 <div class="title">
     <h1 class="article-title-heading">{{ title|e("html") }}</h1>
+{% match crate::MODE %}{% when crate::Mode::Wiki %}
     <a href="/articles/{{ title|urlencode }}/edit" class="dark">[edit]</a>
+{% when _ %}
+{% endmatch %}
 </div>
+<div class="content">
 {# HTML escaping is handled in the code, so we don't need to escape it here (hopefully) #}
 {{ body }}
+</div>
 <br>
 <small>
     Article created: {{ creation_datetime }}
-    {% if edits > 0 %}
+{% if edits > 0 %}
     <br>
     Article last updated: {{ last_edit_datetime }}
     (edited {{ edits }} time{% if edits != 1 %}s{% endif %})
-    {% endif %}
+{% endif %}
 </small>
 <br>
 <a href="/" class="dark">[ Go back to home page ]</a>

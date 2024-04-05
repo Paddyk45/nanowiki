@@ -4,8 +4,9 @@ use axum::body::Body;
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 use tracing::error;
+use crate::{MODE, Mode};
 
-pub async fn root_route() -> (StatusCode, Response<Body>) {
+pub async fn index_route() -> (StatusCode, Response<Body>) {
     let storage = match Storage::read().await {
         Ok(storage) => storage,
         Err(err) => {
@@ -17,13 +18,19 @@ pub async fn root_route() -> (StatusCode, Response<Body>) {
         }
     };
     let mut articles = storage.articles;
-    articles.sort_by_key(|a| a.title.clone());
-    let article_names = articles
+    articles.sort_by_key(|a| {
+        if MODE == Mode::Blog {
+            (i64::MAX - a.creation_timestamp).to_string()
+        } else {
+            a.title.clone()
+        }
+    });
+    let articles = articles
         .into_iter()
-        .map(|a| a.title)
+        .map(|a| (a.title.clone(), a.creation_time_abs()))
         .collect();
     (
         StatusCode::OK,
-        HtmlTemplate(IndexTemplate { article_names }).into_response(),
+        HtmlTemplate(IndexTemplate { articles }).into_response(),
     )
 }

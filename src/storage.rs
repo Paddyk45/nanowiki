@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::error::Error;
 use std::io::ErrorKind;
+use chrono::Utc;
 use tokio::fs::File;
 use tokio::io::AsyncWriteExt;
 
@@ -11,6 +12,43 @@ pub struct Article {
     pub creation_timestamp: i64,
     pub last_edit_timestamp: Option<i64>,
     pub edits: usize,
+}
+
+impl Article {
+    pub fn creation_time_abs(&self) -> String {
+        let current_time = Utc::now().timestamp();
+        let mut diff = current_time - self.creation_timestamp;
+        if diff < 0 {
+            return "in the future (how??)".to_string()
+        }
+        
+        if diff < 60 {
+            return format!("{diff} seconds ago")
+        }
+        
+        diff /= 60;
+        if diff < 60 {
+            return format!("{diff} minutes ago")
+        }
+        
+        diff /= 60;
+        if diff < 24 {
+            return format!("{diff} hours ago")
+        }
+        
+        diff /= 24;
+        if diff < 30 {
+            return format!("{diff} days ago")
+        }
+        
+        diff /= 30;
+        if diff < 12 {
+            return format!("{diff} months ago")
+        }
+        
+        diff /= 12;
+        format!("{diff} years ago")
+    }
 }
 
 #[derive(Serialize, Deserialize, Clone, Default)]

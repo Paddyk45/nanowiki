@@ -8,15 +8,23 @@ body {
 }
 
 code {
-    font-family: monospace, sans-serif;
-    background-color: #283040;
+    display: block;
+    background: #1e2430;
+    font-family: monospace;
+    font-size: 1.4em;
+    border: 1px solid #ccc;
+    padding: 10px;
 }
 
 textarea {
     background-color: #283040;
-    color: white;
+    color: #FFF;
     outline: none;
     border: none;
+}
+
+small {
+    font-size: .7em;
 }
 
 ul.dashed {
@@ -35,12 +43,13 @@ ul.dashed > li:before {
 
 .title {
     width: 99%;
+    border-bottom: 2px #FFF solid;
     padding: 1px;
-    border-bottom: 2px white solid;
 }
 
 .article-title-heading {
     display: inline;
+    vertical-align: center;
 }
 
 .dark {
@@ -51,10 +60,15 @@ input, button {
     background-color: #0d1017;
     color: #bfbdb6;
     border: 1px solid #234;
-    padding: 0.25rem;
     outline: none;
+    padding: .25rem;
 }
 
 input:hover, button:hover {
     border: 1px solid #e6b450;
+}
+
+.content {
+    padding-left: 20px;
+    max-width: 1000px;
 }

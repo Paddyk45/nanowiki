@@ -6,7 +6,7 @@ use axum::response::{Html, IntoResponse, Response};
 #[derive(Template)]
 #[template(path = "index.html")]
 pub struct IndexTemplate {
-    pub article_names: Vec<String>,
+    pub articles: Vec<(String, String)>,
 }
 
 #[derive(Template)]

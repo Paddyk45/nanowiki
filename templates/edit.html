@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="NanoWIKI (https://github.com/Paddyk45/nanowiki)" name="generator">
-    <meta content="Edit '{{ article.title }}' on {{ crate::INSTANCE_NAME }}" property="og:title">
-    <meta content="Edit an article on NanoWIKI" property="og:description">
-    <meta content="/logo.png" property="og:image">
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="NanoWIKI (https://github.com/Paddyk45/nanowiki)" name="generator">
+    <meta content="Edit '{{ article.title }}'" property="og:title">
+    <meta content="Edit an article on {{ crate::INSTANCE_NAME }}" property="og:description">
+    <meta content="/logo.png" property="og:image">
     <link rel="stylesheet" href="/style.css">
     <title>Edit "{{ article.title }}" | {{ crate::INSTANCE_NAME }}</title>
     <script>

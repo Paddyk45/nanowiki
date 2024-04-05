@@ -5,7 +5,7 @@ mod routes;
 mod storage;
 pub mod templates;
 
-use crate::routes::{article_route, delete_route, edit_route, root_route, update_route};
+use crate::routes::{article_route, delete_route, edit_route, index_route, update_route};
 use axum::http::HeaderMap;
 use axum::{routing::get, Router};
 use tower_http::trace;
@@ -18,6 +18,20 @@ pub const INSTANCE_NAME: &str = "NanoWIKI";
 // Leave empty for no password
 pub const EDIT_PASSWORD: &str = "CHANGEME";
 
+#[derive(PartialEq, Debug)]
+pub enum Mode {
+    Wiki,
+    // Hides the "Add new article" and "[edit]" buttons.
+    // If you want to edit an article, you need to manually enter the /edit URL
+    WikiNoEdit,
+    // Same as WikiNoEdit plus:
+    // - Show creation date on the home page
+    // - Sort by creation date instead of alphabetical on the home page
+    Blog,
+}
+
+pub const MODE: Mode = Mode::Blog;
+
 #[tokio::main]
 async fn main() {
     tracing_subscriber::fmt()
@@ -26,11 +40,12 @@ async fn main() {
     if EDIT_PASSWORD == "CHANGEME" {
         warn!("You are using the default password! Please change it");
     }
+    #[allow(clippy::const_is_empty)]
     if EDIT_PASSWORD.is_empty() {
-        warn!("You did not set a password, this allows anyone to erase all pages, spam new pages etc.");
+        warn!("You did not set a password. This allows anyone to erase all pages, spam new pages etc.");
     }
     let app = Router::new()
-        .route("/", get(root_route))
+        .route("/", get(index_route))
         .route("/style.css", get(style_route))
         .route("/favicon.ico", get(favicon_route))
         .route("/logo.png", get(logo_route))

@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="NanoWIKI (https://github.com/Paddyk45/nanowiki)" name="generator">
-    <meta content="{{ crate::INSTANCE_NAME }}" property="og:title">
-    <meta content="Read awesome articles on this NanoWIKI instance" property="og:description">
-    <meta content="/logo.png" property="og:image">
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="NanoWIKI (https://github.com/Paddyk45/nanowiki)" name="generator">
+    <meta content="Home" property="og:title">
+    <meta content="Read awesome articles on {{ crate::INSTANCE_NAME }}" property="og:description">
+    <meta content="/logo.png" property="og:image">
     <link rel="stylesheet" href="/style.css">
     <title>{{ crate::INSTANCE_NAME }}</title>
+{% match crate::MODE %}{% when Wiki %}
     <script>
         function onNew() {
             let name = prompt("What should the article be called? (Cannot contain / or \")");
@@ -21,16 +23,25 @@
             window.location.href = "/articles/" + encodeURIComponent(name) + "/edit";
         }
     </script>
+{% endmatch %}
 </head>
 <body>
 <h1 class="title">Welcome to {{ crate::INSTANCE_NAME }}!</h1>
-<p>This wiki currently has {{ article_names.len() }} articles:</p>
+<p>This wiki currently has {{ articles.len() }} articles:</p>
 <ul class="dashed">
-{% for a in article_names %}
-    <li><a href="/articles/{{ a|urlencode }}">{{ a }}</a></li>
+{% for (title, creation_abs) in articles %}
+    <li>
+        <a href="/articles/{{ title|urlencode }}">{{ title }}</a>
+{% match crate::MODE %}{% when Blog %}
+        <small>{{ creation_abs }}</small>
+{% endmatch %}
+    </li>
 {% endfor %}
 </ul>
+{% match crate::MODE %}{% when crate::Mode::Wiki %}
 <br>
 <button onclick="onNew()">New Article</button>
+{% when _ %}
+{% endmatch %}
 </body>
 </html>
