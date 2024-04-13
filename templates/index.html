@@ -13,7 +13,7 @@
     <meta content="/logo.png" property="og:image">
     <link rel="stylesheet" href="/style.css">
     <title>{{ crate::INSTANCE_NAME }}</title>
-{% match crate::MODE %}{% when Wiki %}
+{% match crate::MODE %}{% when crate::Mode::Wiki %}
     <script>
         function onNew() {
             let name = prompt("What should the article be called? (Cannot contain / or \")");
@@ -23,11 +23,19 @@
             window.location.href = "/articles/" + encodeURIComponent(name) + "/edit";
         }
     </script>
+{% else %}
 {% endmatch %}
 </head>
 <body>
 <h1 class="title">Welcome to {{ crate::INSTANCE_NAME }}!</h1>
-<p>This wiki currently has {{ articles.len() }} articles:</p>
+{% let wiki_or_blog -%}
+{% match crate::MODE -%}
+{% when crate::Mode::Blog -%}
+    {% let wiki_or_blog = "blog" -%}
+{% else -%}
+    {% let wiki_or_blog = "wiki" -%}
+{% endmatch -%}
+<p>This {{ wiki_or_blog }} currently has {{ articles.len() }} articles:</p>
 <ul class="dashed">
 {% for (title, creation_abs) in articles %}
     <li>
@@ -41,7 +49,7 @@
 {% match crate::MODE %}{% when crate::Mode::Wiki %}
 <br>
 <button onclick="onNew()">New Article</button>
-{% when _ %}
+{% else %}
 {% endmatch %}
 </body>
 </html>

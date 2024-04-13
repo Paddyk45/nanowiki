@@ -30,7 +30,7 @@ pub enum Mode {
     Blog,
 }
 
-pub const MODE: Mode = Mode::Blog;
+pub const MODE: Mode = Mode::Wiki;
 
 #[tokio::main]
 async fn main() {

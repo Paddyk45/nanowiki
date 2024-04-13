@@ -19,7 +19,7 @@
     <h1 class="article-title-heading">{{ title|e("html") }}</h1>
 {% match crate::MODE %}{% when crate::Mode::Wiki %}
     <a href="/articles/{{ title|urlencode }}/edit" class="dark">[edit]</a>
-{% when _ %}
+{% else %}
 {% endmatch %}
 </div>
 <div class="content">
