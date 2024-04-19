@@ -35,7 +35,7 @@
 {% else -%}
     {% let wiki_or_blog = "wiki" -%}
 {% endmatch -%}
-<p>This {{ wiki_or_blog }} currently has {{ articles.len() }} articles:</p>
+<p>This {{ wiki_or_blog }} currently has {{ articles.len() }} article{% if articles.len() != 1 %}s{% endif %}:</p>
 <ul class="dashed">
 {% for (title, creation_abs) in articles %}
     <li>
