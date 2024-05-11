@@ -51,14 +51,14 @@ pub async fn article_route(Path(name): Path<String>) -> (StatusCode, HeaderMap, 
     };
     
     let lines = html_escape::encode_text(&article.body)
-    .lines()
-    .map(String::from)
-    .map(|mut l| {
-        if let Some(s) = l.strip_prefix("&gt; ") {
-            l = format!("> {s}")
-        }
-        l
-    })
+        .lines()
+        .map(String::from)
+        .map(|mut l| {
+            if let Some(s) = l.strip_prefix("&gt; ") {
+                l = format!("> {s}")
+            }
+            l
+        })
     .collect::<Vec<String>>()
     .join("\n");
     let parser = Parser::new(&lines);
