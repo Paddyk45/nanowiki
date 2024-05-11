@@ -1,5 +1,5 @@
 # nanowiki
-A very small(~2MB, ~600KB with UPX) and minimalistic wiki/blog! [Demo](https://blog.paddyk45.de/demo)
+A very small(~2MB, ~600KB with UPX) and minimalistic wiki/blog! [Demo](https://blog.paddyk45.de/articles/demo)
 
 # Setup
 0. Open src/main.rs in a text editor
