@@ -59,8 +59,8 @@ pub async fn article_route(Path(name): Path<String>) -> (StatusCode, HeaderMap, 
             }
             l
         })
-    .collect::<Vec<String>>()
-    .join("\n");
+        .collect::<Vec<String>>()
+        .join("\n");
     let parser = Parser::new(&lines);
     let mut cmark_body = String::new();
     pulldown_cmark::html::push_html(&mut cmark_body, parser);
