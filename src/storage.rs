@@ -15,7 +15,7 @@ pub struct Article {
 }
 
 impl Article {
-    pub fn creation_time_abs(&self) -> String {
+    pub fn creation_time_rel(&self) -> String {
         let current_time = Utc::now().timestamp();
         let mut diff = current_time - self.creation_timestamp;
         if diff < 0 {
