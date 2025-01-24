@@ -27,7 +27,7 @@ pub async fn index_route() -> (StatusCode, Response<Body>) {
     });
     let articles = articles
         .into_iter()
-        .map(|a| (a.title.clone(), a.creation_time_abs()))
+        .map(|a| (a.title.clone(), a.creation_time_rel()))
         .collect();
     (
         StatusCode::OK,
