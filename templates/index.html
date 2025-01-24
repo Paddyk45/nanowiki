@@ -37,11 +37,11 @@
 {% endmatch -%}
 <p>This {{ wiki_or_blog }} currently has {{ articles.len() }} article{% if articles.len() != 1 %}s{% endif %}:</p>
 <ul class="dashed">
-{% for (title, creation_abs) in articles %}
+{% for (title, creation_rel) in articles %}
     <li>
         <a href="/articles/{{ title|urlencode }}">{{ title }}</a>
 {% match crate::MODE %}{% when Blog %}
-        <small>{{ creation_abs }}</small>
+        <small>{{ creation_rel }}</small>
 {% endmatch %}
     </li>
 {% endfor %}
